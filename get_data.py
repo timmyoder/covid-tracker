@@ -6,18 +6,14 @@ penn_deaths = 'https://data.pa.gov/resource/fbgu-sqgp.json'
 penn_hospital = 'https://data.pa.gov/resource/kayn-sjhx.json'
 
 
-def get_philly_data():
+def get_penn_data(county):
     """retrieve data from Penn dept health for phila county returns a df"""
-    phila_response = requests.get(f'{penn_cases}?county=Philadelphia').json()
-    phila_data = pd.DataFrame(phila_response).set_index('date').sort_index()
-    return phila_data
+    response = requests.get(f'{penn_cases}?county={county}').json()
+    penn_data = pd.DataFrame(response)
+    penn_data['date'] = pd.to_datetime(penn_data['date'])
+    penn_data = penn_data.set_index('date').sort_index()
+
+    return penn_data
 
 
-def get_somerset_data():
-    """retrieve data from Penn dept health for Somerset County. returns a df"""
-
-    somerset_response = requests.get(f'{penn_cases}?county=Somerset').json()
-    somerset = pd.DataFrame(somerset_response).set_index('date').sort_index()
-
-    return somerset
 
