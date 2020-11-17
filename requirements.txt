@@ -10,7 +10,7 @@ Flask==1.1.2
 idna
 itsdangerous==1.1.0
 Jinja2==2.11.2
-kiwisolver 
+kiwisolver
 MarkupSafe
 matplotlib
 mkl-fft==1.2.0
