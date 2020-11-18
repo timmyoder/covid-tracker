@@ -1,37 +1,14 @@
 from flask import Flask, request, render_template, redirect, url_for
 import os
 
-import matplotlib
-matplotlib.use('Agg')
-import matplotlib.pyplot as plt
-plt.ioff()
-
 from threading import Lock
+
 lock = Lock()
-import mpld3
-from mpld3 import plugins
 
 import get_data
+import plotting
 
 app = Flask(__name__)
-
-
-def plot_data(data, titles):
-    title_font = {'fontsize': 18,
-                 }
-    axis_font = {'fontsize': 14}
-    with lock:
-        fig = plt.figure()
-        plt.plot(data)
-        plt.title(titles['figure'],
-                  fontdict=title_font)
-        plt.xlabel(titles['x'],
-                   fontdict=axis_font)
-        plt.ylabel(titles['y'],
-                   fontdict=axis_font)
-        fig.autofmt_xdate(rotation=45)
-        html_str = mpld3.fig_to_html(fig)
-    return html_str
 
 
 @app.route('/')
@@ -42,12 +19,16 @@ def hello_world():
 @app.route('/somerset')
 def somerset():
     somerset_data = get_data.get_penn_data(county='Somerset')
+    cases = somerset_data[0]
     titles = {'figure': 'Somerset Cases',
               'x': 'Date',
-              'y': 'New Cases Rate per 100k Residents'}
-    figure_html = plot_data(somerset_data.cases_avg_new_rate, titles)
+              'y': 'Daily Cases'}
+    with lock:
+        figure_html = plotting.plot_cases(cases.cases,
+                                          cases.cases_avg_new,
+                                          titles)
 
-    return render_template('plot.jinja2',
+    return render_template('location_page.jinja2',
                            county_name='Somerset',
                            figure_html=figure_html)
 
