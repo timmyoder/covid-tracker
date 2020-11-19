@@ -1,14 +1,12 @@
 from flask import Flask, request, render_template, redirect, url_for
 import os
-
 from threading import Lock
 
-lock = Lock()
-
 import get_data
-import plotting
+from location_page import LocationPage
 
 app = Flask(__name__)
+lock = Lock()
 
 
 @app.route('/')
@@ -18,19 +16,38 @@ def hello_world():
 
 @app.route('/somerset')
 def somerset():
-    somerset_data = get_data.get_penn_data(county='Somerset')
-    cases = somerset_data[0]
-    titles = {'figure': 'Somerset Cases',
-              'x': 'Date',
-              'y': 'Daily Cases'}
+    cases, deaths, hospital = get_data.get_penn_data(county='Somerset')
+
+    somerset_page = LocationPage('Somerset',
+                                 cases=cases,
+                                 deaths=deaths,
+                                 r_value=0,
+                                 hospital=hospital)
+
     with lock:
-        figure_html = plotting.plot_cases(cases.cases,
-                                          cases.cases_avg_new,
-                                          titles)
+        somerset_page.create_case_plots()
+        somerset_page.create_death_plots()
 
     return render_template('location_page.jinja2',
-                           county_name='Somerset',
-                           figure_html=figure_html)
+                           location_data=somerset_page)
+
+
+@app.route('/philadelphia')
+def philly():
+    cases, deaths, hospital = get_data.get_penn_data(county='Philadelphia')
+
+    philly_page = LocationPage('Philadelphia',
+                               cases=cases,
+                               deaths=deaths,
+                               r_value=0,
+                               hospital=hospital)
+
+    with lock:
+        philly_page.create_case_plots()
+        philly_page.create_death_plots()
+
+    return render_template('location_page.jinja2',
+                           location_data=philly_page)
 
 
 if __name__ == '__main__':
