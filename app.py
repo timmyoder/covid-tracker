@@ -11,7 +11,7 @@ lock = Lock()
 
 @app.route('/')
 def hello_world():
-    return 'Hello World!'
+    return render_template('home.jinja2')
 
 
 @app.route('/somerset')
@@ -46,7 +46,7 @@ def philly():
     with lock:
         philly_page.create_case_plots()
         philly_page.create_death_plots()
-        somerset_page.create_hospital_plot()
+        philly_page.create_hospital_plot()
 
 
     return render_template('location_page.jinja2',

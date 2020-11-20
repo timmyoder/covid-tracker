@@ -1,6 +1,6 @@
 <html>
 <head>
-<title>Yoder Covid Cases</title>
+<title>Yoder Covid Tracker</title>
 </head>
     <link rel="stylesheet" href="{{ url_for('static', filename='covid_style.css') }}">
 <body>
@@ -9,8 +9,7 @@
         <a id="create" href="{{  url_for('philly') }}">Philly</a>
         <a id="create" href="{{  url_for('somerset') }}">Somerset</a>
     </nav>
-	<h1>Covid</h1>
-	<h2>{% block subtitle %} {% endblock subtitle %}</h2>
+	<h1>{% block subtitle %} {% endblock subtitle %}</h1>
 	{% block content %} {% endblock content %}
 </body>
 </html>
