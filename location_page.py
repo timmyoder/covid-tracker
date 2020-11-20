@@ -45,6 +45,10 @@ class LocationPage:
         self.deaths_2wk_100 = round(self.recent_deaths.deaths_rate.sum(), 1)
         self.deaths_yesterday_100 = round(deaths.deaths_rate.iloc[-1], 1)
 
+        self.hospital_percent = self.hospital[['aii_percent',
+                                               'icu_percent',
+                                               'med_percent']].iloc[-2:]
+
     def create_case_plots(self):
         case_titles = {'figure': f'{self.name} Case Data',
                        'y': 'Daily Cases'}
@@ -70,3 +74,9 @@ class LocationPage:
         self.recent_deaths_fig_html = plotting.plot_deaths(self.recent_deaths.deaths,
                                                            recent_titles
                                                            )
+
+    def create_hospital_plot(self):
+        self.hospital_percent.index = ['In Use', 'Available']
+        self.hospital_percent.loc['In Use'] = 100 - self.hospital_percent.loc['Available']
+
+        self.hospital_fig_html = plotting.plot_hospital_avail(self.hospital_percent)

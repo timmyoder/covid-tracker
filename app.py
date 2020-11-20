@@ -27,6 +27,7 @@ def somerset():
     with lock:
         somerset_page.create_case_plots()
         somerset_page.create_death_plots()
+        somerset_page.create_hospital_plot()
 
     return render_template('location_page.jinja2',
                            location_data=somerset_page)
@@ -45,6 +46,8 @@ def philly():
     with lock:
         philly_page.create_case_plots()
         philly_page.create_death_plots()
+        somerset_page.create_hospital_plot()
+
 
     return render_template('location_page.jinja2',
                            location_data=philly_page)
