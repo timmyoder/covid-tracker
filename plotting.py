@@ -83,6 +83,7 @@ def plot_hospital_avail(percentage_data):
                width=barWidth,
                label="In Use")
         plt.legend()
+        plt.title('Current Hospital Capacity')
         ax.set_xticks(r)
         ax.set_xticklabels(bed_types)
         # plt.xticks(ticks=r, labels=bed_types, fontweight='bold')
@@ -90,5 +91,30 @@ def plot_hospital_avail(percentage_data):
         ax.set_xlabel(bed_types)
 
         html_str = mpld3.fig_to_html(fig)
+
+    return html_str
+
+
+def plot_hospitals(covid_daily,
+                   covid_average,
+                   titles):
+    fig = plt.figure()
+
+    plt.bar(covid_daily.index,
+            covid_daily,
+            alpha=.65,
+            color='tab:gray',
+            label='Single Day - Covid Patients')
+    plt.plot(covid_average,
+             color='tab:red',
+             lw=3,
+             label='7 Day Average - Covid Patients')
+    plt.title(titles['figure'],
+              fontdict=title_font)
+    plt.ylabel(titles['y'],
+               fontdict=axis_font)
+    fig.autofmt_xdate(rotation=45)
+    plt.legend()
+    html_str = mpld3.fig_to_html(fig)
 
     return html_str

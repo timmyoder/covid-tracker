@@ -17,6 +17,11 @@ class LocationPage:
         self.hospital = hospital
         self.r_value = r_value
 
+        self.hospital_ave = hospital[['aii_total',
+                                      'icu_total',
+                                      'med_total',
+                                      'covid_patients']].rolling(window=7).mean()
+
         self.last_date = cases.index[-1].date()
         self.recent_cases = cases.iloc[-14:]
         self.recent_deaths = deaths.iloc[-14:]
@@ -27,7 +32,7 @@ class LocationPage:
 
         self.recent_cases_fig_html = None
         self.recent_deaths_fig_html = None
-        self.hospital_fig_html = None
+        self.hospital_avail_fig_html = None
 
         self.cases_total = int(cases.cases_cume.iloc[-1])
         self.cases_2wk = int(self.recent_cases.cases.sum())
@@ -78,5 +83,11 @@ class LocationPage:
     def create_hospital_plot(self):
         self.hospital_percent.index = ['In Use', 'Available']
         self.hospital_percent.loc['In Use'] = 100 - self.hospital_percent.loc['Available']
+        self.hospital_avail_fig_html = plotting.plot_hospital_avail(self.hospital_percent)
 
-        self.hospital_fig_html = plotting.plot_hospital_avail(self.hospital_percent)
+        title = {'figure': 'Hospitalization Over Time',
+                 'y': 'Daily Total Patients'}
+
+        self.hospital_fig_html = plotting.plot_hospitals(self.hospital['covid_patients'],
+                                                         self.hospital_ave['covid_patients'],
+                                                         title)
