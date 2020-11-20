@@ -10,8 +10,8 @@ body {
   background-image: url("/static/vid.png");
 
   /* Add the blur effect */
-  filter: blur(20px);
-  -webkit-filter: blur(20px);
+  filter: blur(9px);
+  -webkit-filter: blur(9px);
 
   /* Full height */
   height: 100%;
@@ -25,7 +25,7 @@ body {
 /* Position text in the middle of the page/image */
 .bg-text {
   background-color: rgb(0,0,0); /* Fallback color */
-  background-color: rgba(0,0,0, 0.4); /* Black w/opacity/see-through */
+  background-color: rgba(0,0,0, 0.6); /* Black w/opacity/see-through */
   color: white;
   font-weight: bold;
   border: 3px solid #f1f1f1;

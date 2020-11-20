@@ -10,7 +10,7 @@ lock = Lock()
 
 
 @app.route('/')
-def hello_world():
+def home():
     return render_template('home.jinja2')
 
 
